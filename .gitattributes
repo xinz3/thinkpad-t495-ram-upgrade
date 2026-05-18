@@ -1,1 +1,2 @@
-*.txt linguist-language=Markdown
+*.md linguist-language=Markdown linguist-detectable=true linguist-documentation=false
+*.txt linguist-language=Markdown linguist-detectable=true linguist-documentation=false
