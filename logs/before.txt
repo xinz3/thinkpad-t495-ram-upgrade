@@ -1,0 +1,95 @@
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           5.7Gi       3.8Gi       489Mi       294Mi       1.9Gi       1.8Gi
+Swap:          2.8Gi       967Mi       1.9Gi
+
+$ sudo dmidecode -t memory
+# dmidecode 3.7
+Getting SMBIOS data from sysfs.
+SMBIOS 3.1.1 present.
+
+Handle 0x0001, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: None
+	Maximum Capacity: 64 GiB
+	Error Information Handle: 0x0000
+	Number Of Devices: 2
+
+Handle 0x0008, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0001
+	Error Information Handle: 0x0007
+	Total Width: 64 bits
+	Data Width: 64 bits
+	Size: 8 GiB
+	Form Factor: SODIMM
+	Set: None
+	Locator: DIMM 0
+	Bank Locator: P0 CHANNEL A
+	Type: DDR4
+	Type Detail: Synchronous Unbuffered (Unregistered)
+	Speed: 2400 MT/s
+	Manufacturer: Micron Technology
+	Serial Number: [REDACTED]
+	Asset Tag: [REDACTED]
+	Part Number: [REDACTED]
+	Rank: 1
+	Configured Memory Speed: 2400 MT/s
+	Minimum Voltage: 1.2 V
+	Maximum Voltage: 1.2 V
+	Configured Voltage: 1.2 V
+
+Handle 0x000B, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0001
+	Error Information Handle: 0x000A
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: Unknown
+	Set: None
+	Locator: DIMM 0
+	Bank Locator: P0 CHANNEL B
+	Type: Unknown
+	Type Detail: Unknown
+
+
+$ sysbench memory --memory-total-size=10G run
+sysbench 1.0.20 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Running memory speed test with the following options:
+  block size: 1KiB
+  total size: 10240MiB
+  operation: write
+  scope: global
+
+Initializing worker threads...
+
+Threads started!
+
+Total operations: 10485760 (5647853.11 per second)
+
+10240.00 MiB transferred (5515.48 MiB/sec)
+
+
+General statistics:
+    total time:                          1.8528s
+    total number of events:              10485760
+
+Latency (ms):
+         min:                                    0.00
+         avg:                                    0.00
+         max:                                    2.76
+         95th percentile:                        0.00
+         sum:                                  822.08
+
+Threads fairness:
+    events (avg/stddev):           10485760.0000/0.00
+    execution time (avg/stddev):   0.8221/0.00

@@ -1,0 +1,154 @@
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:            21Gi       3.7Gi        14Gi       143Mi       3.2Gi        17Gi
+Swap:          4.0Gi          0B       4.0Gi
+
+$ sudo dmidecode -t memory
+# dmidecode 3.7
+Getting SMBIOS data from sysfs.
+SMBIOS 3.1.1 present.
+
+Handle 0x0001, DMI type 16, 23 bytes
+Physical Memory Array
+        Location: System Board Or Motherboard
+        Use: System Memory
+        Error Correction Type: None
+        Maximum Capacity: 64 GiB
+        Error Information Handle: 0x0000
+        Number Of Devices: 2
+
+Handle 0x0008, DMI type 17, 40 bytes
+Memory Device
+        Array Handle: 0x0001
+        Error Information Handle: 0x0007
+        Total Width: 64 bits
+        Data Width: 64 bits
+        Size: 8 GiB
+        Form Factor: SODIMM
+        Set: None
+        Locator: DIMM 0
+        Bank Locator: P0 CHANNEL A
+        Type: DDR4
+        Type Detail: Synchronous Unbuffered (Unregistered)
+        Speed: 2400 MT/s
+        Manufacturer: Micron Technology
+        Serial Number: [REDACTED]
+        Asset Tag: Not Specified
+        Part Number: 4ATS1G64HZ-2G6E1
+        Rank: 1
+        Configured Memory Speed: 2400 MT/s
+        Minimum Voltage: 1.2 V
+        Maximum Voltage: 1.2 V
+        Configured Voltage: 1.2 V
+
+Handle 0x000B, DMI type 17, 40 bytes
+Memory Device
+        Array Handle: 0x0001
+        Error Information Handle: 0x000A
+        Total Width: 64 bits
+        Data Width: 64 bits
+        Size: 16 GiB
+        Form Factor: SODIMM
+        Set: None
+        Locator: DIMM 0
+        Bank Locator: P0 CHANNEL B
+        Type: DDR4
+        Type Detail: Synchronous Unbuffered (Unregistered)
+        Speed: 2400 MT/s
+        Manufacturer: Unknown
+        Serial Number: [REDACTED]
+        Asset Tag: Not Specified
+        Part Number: TEAMGROUP-SD4-2666
+        Rank: 1
+        Configured Memory Speed: 2400 MT/s
+        Minimum Voltage: 1.2 V
+        Maximum Voltage: 1.2 V
+        Configured Voltage: 1.2 V
+
+$ lshw -short -C memory
+H/W path              Device          Class          Description
+================================================================
+/0/1                                  memory         24GiB System Memory
+/0/1/0                                memory         8GiB SODIMM DDR4 Synchronous Unbuffered (Unregistered) 2
+/0/1/1                                memory         16GiB SODIMM DDR4 Synchronous Unbuffered (Unregistered) 
+/0/3                                  memory         384KiB L1 cache
+/0/4                                  memory         2MiB L2 cache
+/0/5                                  memory         4MiB L3 cache
+/0/e                                  memory         128KiB BIOS
+
+$ sysbench memory --memory-total-size=10G run
+sysbench 1.0.20 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Running memory speed test with the following options:
+  block size: 1KiB
+  total size: 10240MiB
+  operation: write
+  scope: global
+
+Initializing worker threads...
+
+Threads started!
+
+Total operations: 10485760 (3826080.60 per second)
+
+10240.00 MiB transferred (3736.41 MiB/sec)
+
+
+General statistics:
+    total time:                          2.7365s
+    total number of events:              10485760
+
+Latency (ms):
+         min:                                    0.00
+         avg:                                    0.00
+         max:                                    0.17
+         95th percentile:                        0.00
+         sum:                                 1215.48
+
+Threads fairness:
+    events (avg/stddev):           10485760.0000/0.00
+    execution time (avg/stddev):   1.2155/0.00
+
+
+$ sysbench memory --memory-total-size=10G --memory-oper=read run
+sysbench 1.0.20 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Running memory speed test with the following options:
+  block size: 1KiB
+  total size: 10240MiB
+  operation: read
+  scope: global
+
+Initializing worker threads...
+
+Threads started!
+
+Total operations: 10485760 (4865674.22 per second)
+
+10240.00 MiB transferred (4751.63 MiB/sec)
+
+
+General statistics:
+    total time:                          2.1510s
+    total number of events:              10485760
+
+Latency (ms):
+         min:                                    0.00
+         avg:                                    0.00
+         max:                                    0.25
+         95th percentile:                        0.00
+         sum:                                  668.56
+
+Threads fairness:
+    events (avg/stddev):           10485760.0000/0.00
+    execution time (avg/stddev):   0.6686/0.00
