@@ -1,7 +1,7 @@
 <a id="top"></a>
 
 <div align="center">
-  <h1>ThinkPad T495 RAM Upgrade:<br />8 GiB Single‑Channel → Dual‑Channel 24 GiB</h1>
+  <h1>ThinkPad T495 RAM Upgrade:<br />8 GiB Single‑Channel → 24 GiB Mixed / Flex‑Mode Dual‑Channel</h1>
   <p>
     <img alt="ThinkPad Cult" src="https://img.shields.io/badge/ThinkPad-Cult-red?logo=lenovo&logoColor=white" />
     <img alt="Linux" src="https://img.shields.io/badge/Linux-Kernel-black?logo=linux&logoColor=FCC624" />
@@ -15,9 +15,11 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Upgrade Summary](#upgrade-summary)
 - [Prerequisites & Tools](#prerequisites--tools)
 - [Images](#images)
 - [Installation](#installation)
+  - [Safety notes](#safety-notes)
 - [Before Upgrade](#before-upgrade)
 - [After Upgrade (Installed State)](#after-upgrade-installed-state)
 - [Benchmarks](#benchmarks)
@@ -28,14 +30,25 @@
 ---
 
 ## Introduction
-🧠 This repository documents a RAM upgrade on a ThinkPad T495 (Ryzen 3500U): **8 GiB soldered Micron DDR4‑2400** + **one empty SODIMM slot** (single‑channel) → **24 GiB total** with a **16 GiB DDR4 SODIMM**.
+🧠 This repository documents a RAM upgrade on a ThinkPad T495 (Ryzen 3500U): **8 GiB soldered Micron DDR4‑2400** + **one empty SODIMM slot** → **24 GiB physical RAM** with a **16 GiB DDR4 SODIMM**.
 
-> **Note:** The Ryzen Vega iGPU reserves a chunk of system memory, so the operating system sees less than the physical total. Before upgrade, `free -h` showed 5.7 GiB usable out of 8 GiB installed.
+## Upgrade Summary
 
-Upgrade status:
-- ✅ **Installed:** 8 GiB Micron (Channel A) + 16 GiB module (Channel B) = 24 GiB physical
-- ✅ **Configured speed:** 2400 MT/s on both DIMMs
-- ✅ **Logs captured:** `free` + `dmidecode` before/after, `sysbench` write before/after, `lshw` + `sysbench` read after-upgrade
+| Item | Before | After |
+|---|---:|---:|
+| Physical RAM | 8 GiB | 24 GiB |
+| Linux usable RAM | 5.7 GiB | 21 GiB |
+| Channel A | 8 GiB soldered Micron DDR4‑2400 | 8 GiB soldered Micron DDR4‑2400 |
+| Channel B | Empty | 16 GiB DDR4 SODIMM |
+| Channel behavior | Single-channel | Mixed / flex-mode dual-channel |
+| Reported/configured speed | 2400 MT/s | 2400 MT/s |
+| Swap usage at capture | 967 MiB | 0 B |
+
+Notes for nitpickers:
+- **8 GiB + 16 GiB is mixed capacity**, so this is not full symmetric dual-channel across all 24 GiB. The matched 8 GiB + 8 GiB portion should benefit from dual-channel behavior; the extra 8 GiB depends on platform/firmware mapping.
+- **Linux usable RAM is lower than physical RAM** because the Ryzen Vega iGPU reserves system memory.
+
+Logs captured: `free`, `dmidecode`, `lshw`, and `sysbench` before/after where available.
 
 ⬆️ [Back to top](#top)
 
@@ -75,6 +88,15 @@ Upgrade photos:
 
 ## Installation
 Standard ThinkPad SODIMM swap: disable the battery in BIOS, remove the base cover, and install the module in the free slot next to the soldered memory. Follow the Lenovo HMM for the full procedure.
+
+### Safety notes
+
+- Disable the internal battery in BIOS before opening the laptop.
+- Disconnect AC power.
+- Use a plastic spudger/opening tool where possible; avoid metal tools around the board.
+- Keep track of screws and clips.
+- Insert the SODIMM at an angle, then press it down until both side clips lock.
+- If anything feels forced, stop and re-check the Lenovo HMM.
 
 ⬆️ [Back to top](#top)
 
@@ -300,9 +322,9 @@ Latency (ms):
 ---
 
 ## ThinkPad Culture & Credits
-- The T495's soldered memory is a limitation, but popping a stick into the free slot for **dual‑channel** is the best thing you can do for the **Vega iGPU**.
+- The T495's soldered memory is a limitation, but filling the free slot for **mixed/flex dual‑channel behavior** is one of the best upgrades you can do for multitasking and the **Vega iGPU**.
 - ThinkPad keyboards, TrackPoint stewardship, and that matte‑black slab — that's why we keep these machines alive.
-- Captured on **Arch Linux**.
+- Captured on **Arch Linux, btw**.
 - The red nub is non‑negotiable. 🔴
 
 ⬆️ [Back to top](#top)
