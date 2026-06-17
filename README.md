@@ -1,7 +1,8 @@
 <a id="top"></a>
 
 <div align="center">
-  <h1>ThinkPad T495 RAM Upgrade:<br />8 GiB Single‑Channel → 24 GiB Mixed / Flex‑Mode Dual‑Channel</h1>
+  <h1>ThinkPad T495 RAM Upgrade</h1>
+  <p><strong>8 GiB Single-Channel → 24 GiB Mixed / Flex-Mode Dual-Channel</strong></p>
   <p>
     <img alt="ThinkPad Cult" src="https://img.shields.io/badge/ThinkPad-Cult-red?logo=lenovo&logoColor=white" />
     <img alt="Linux" src="https://img.shields.io/badge/Linux-Kernel-black?logo=linux&logoColor=FCC624" />
@@ -10,60 +11,66 @@
     <img alt="DDR4 2400 MT/s" src="https://img.shields.io/badge/RAM-DDR4_2400_MT%2Fs-blue?logo=kingstontechnology&logoColor=white" />
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-green?logo=open-source-initiative&logoColor=white" />
   </p>
-  <p><strong>Black slab. Red nub. Dual‑channel dreams.</strong> 🔴🖤</p>
+  <p><strong>Black slab. Red nub. Dual-channel dreams.</strong> 🔴🖤</p>
 </div>
-
-## Table of Contents
-- [Introduction](#introduction)
-- [Upgrade Summary](#upgrade-summary)
-- [Prerequisites & Tools](#prerequisites--tools)
-- [Images](#images)
-- [Installation](#installation)
-  - [Safety notes](#safety-notes)
-- [Before Upgrade](#before-upgrade)
-- [After Upgrade (Installed State)](#after-upgrade-installed-state)
-- [Benchmarks](#benchmarks)
-- [Troubleshooting](#troubleshooting)
-- [ThinkPad Culture & Credits](#thinkpad-culture--credits)
-- [License](#license)
 
 ---
 
-## Introduction
-🧠 This repository documents a RAM upgrade on a ThinkPad T495 (Ryzen 3500U): **8 GiB soldered Micron DDR4‑2400** + **one empty SODIMM slot** → **24 GiB physical RAM** with a **16 GiB DDR4 SODIMM**.
+## 📚 Table of contents
+- [🧠 Introduction](#introduction)
+- [📊 Upgrade Summary](#upgrade-summary)
+- [🧰 Prerequisites & Tools](#prerequisites--tools)
+- [🖼️ Images](#images)
+- [🔧 Installation](#installation)
+  - [⚠️ Safety notes](#safety-notes)
+- [📉 Before Upgrade](#before-upgrade)
+- [📈 After Upgrade](#after-upgrade-installed-state)
+- [⚡ Benchmarks](#benchmarks)
+- [🛠️ Troubleshooting](#troubleshooting)
+- [🖤 ThinkPad Culture & Credits](#thinkpad-culture--credits)
+- [⚖️ License](#license)
 
-## Upgrade Summary
+<a id="introduction"></a>
+
+## 🧠 Introduction
+A RAM upgrade on a ThinkPad T495 (Ryzen 3500U): **8 GiB soldered Micron DDR4-2400** + **one empty SODIMM slot** → **24 GiB physical RAM** with a **16 GiB DDR4 SODIMM**.
+
+<p align="right"><a href="#top">↑ Back to top</a></p>
+
+<a id="upgrade-summary"></a>
+
+## 📊 Upgrade Summary
 
 | Item | Before | After |
 |---|---:|---:|
-| Physical RAM | 8 GiB | 24 GiB |
-| Linux usable RAM | 5.7 GiB | 21 GiB |
-| Channel A | 8 GiB soldered Micron DDR4‑2400 | 8 GiB soldered Micron DDR4‑2400 |
-| Channel B | Empty | 16 GiB DDR4 SODIMM |
+| Physical RAM | 8 GiB | 24 GiB |
+| Linux usable RAM | 5.7 GiB | 21 GiB |
+| Channel A | 8 GiB soldered Micron DDR4-2400 | 8 GiB soldered Micron DDR4-2400 |
+| Channel B | Empty | 16 GiB DDR4 SODIMM |
 | Channel behavior | Single-channel | Mixed / flex-mode dual-channel |
-| Reported/configured speed | 2400 MT/s | 2400 MT/s |
-| Swap usage at capture | 967 MiB | 0 B |
+| Reported/configured speed | 2400 MT/s | 2400 MT/s |
+| Swap usage at capture | 967 MiB | 0 B |
 
-Notes for nitpickers:
-- **8 GiB + 16 GiB is mixed capacity**, so this is not full symmetric dual-channel across all 24 GiB. The matched 8 GiB + 8 GiB portion should benefit from dual-channel behavior; the extra 8 GiB depends on platform/firmware mapping.
+Notes:
+- **8 GiB + 16 GiB is mixed capacity**, so this is not full symmetric dual-channel. The matched 8 GiB + 8 GiB portion benefits from dual-channel behavior; the extra 8 GiB depends on firmware mapping.
 - **Linux usable RAM is lower than physical RAM** because the Ryzen Vega iGPU reserves system memory.
 
 Logs captured: `free`, `dmidecode`, `lshw`, and `sysbench` before/after where available.
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="prerequisites--tools"></a>
 
-## Prerequisites & Tools
-- **Tools:** Phillips #0 screwdriver, spudger, anti‑static wrist strap
+## 🧰 Prerequisites & Tools
+- **Tools:** Phillips #0 screwdriver, spudger, anti-static wrist strap
 - **Reference:** [Lenovo T495 HMM](https://download.lenovo.com/pccbbs/mobiles_pdf/t495_hmm_en.pdf)
 - **Software:** `dmidecode`, `lshw`, `sysbench`, `i2c-tools`
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="images"></a>
 
-## Images
+## 🖼️ Images
 Upgrade photos:
 
 | New RAM stick: DDR4 16 GB SODIMM  |
@@ -82,14 +89,16 @@ Upgrade photos:
 | --- |
 | <img src="assets/terminal.png" alt="Terminal output after RAM upgrade" width="700" /> |
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="installation"></a>
 
-## Installation
+## 🔧 Installation
 Standard ThinkPad SODIMM swap: disable the battery in BIOS, remove the base cover, and install the module in the free slot next to the soldered memory. Follow the Lenovo HMM for the full procedure.
 
-### Safety notes
+<a id="safety-notes"></a>
+
+### ⚠️ Safety notes
 
 - Disable the internal battery in BIOS before opening the laptop.
 - Disconnect AC power.
@@ -98,11 +107,11 @@ Standard ThinkPad SODIMM swap: disable the battery in BIOS, remove the base cove
 - Insert the SODIMM at an angle, then press it down until both side clips lock.
 - If anything feels forced, stop and re-check the Lenovo HMM.
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="before-upgrade"></a>
 
-## Before Upgrade
+## 📉 Before Upgrade
 *Captured on Arch Linux as baseline before installation.*
 
 Raw logs: [logs/before.txt](logs/before.txt)
@@ -114,7 +123,7 @@ $ free -h
 Mem:           5.7Gi       3.8Gi       489Mi       294Mi       1.9Gi       1.8Gi
 Swap:          2.8Gi       967Mi       1.9Gi
 ```
-*~2 GiB reserved for Vega iGPU, so usable RAM is 5.7 GiB instead of 8 GiB.*
+*~2 GiB reserved for Vega iGPU, so usable RAM is 5.7 GiB instead of 8 GiB.*
 
 ### RAM Details (`dmidecode`)
 ```text
@@ -170,18 +179,16 @@ Memory Device
 	Type: Unknown
 	Type Detail: Unknown
 ```
-- **Channel A:** 8 GiB Micron DDR4‑2400, single‑rank (soldered)
-- **Channel B:** empty → **single‑channel operation**
-- Board max capacity: 64 GiB
+- **Channel A:** 8 GiB Micron DDR4-2400, single-rank (soldered)
+- **Channel B:** empty → **single-channel operation**
+- Board max capacity: 64 GiB
 
-*(Disassembly photos included above.)*
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
-⬆️ [Back to top](#top)
+<a id="after-upgrade-installed-state"></a>
 
----
-
-## After Upgrade (Installed State)
-*Captured on Arch Linux after installing the 16 GiB SODIMM.*
+## 📈 After Upgrade
+*Captured on Arch Linux after installing the 16 GiB SODIMM.*
 
 Raw logs: [logs/after.txt](logs/after.txt)
 
@@ -192,7 +199,7 @@ $ free -h
 Mem:            21Gi       3.7Gi        14Gi       143Mi       3.2Gi        17Gi
 Swap:          4.0Gi          0B       4.0Gi
 ```
-*Linux now reports 21 GiB usable memory (with hardware-reserved memory taken out).*
+*Linux now reports 21 GiB usable memory (with hardware-reserved memory taken out).*
 
 ### Memory Inventory
 ```text
@@ -227,16 +234,18 @@ H/W path              Device          Class          Description
 /0/1/0                                memory         8GiB SODIMM DDR4 Synchronous Unbuffered (Unregistered) 2
 /0/1/1                                memory         16GiB SODIMM DDR4 Synchronous Unbuffered (Unregistered)
 ```
-- **Channel A (soldered):** 8 GiB Micron DDR4‑2400, single-rank
-- **Channel B (SODIMM):** 16 GiB DDR4 module, running at 2400 MT/s
-- **Total detected:** 24 GiB physical (21 GiB usable in Linux after reservation)
+- **Channel A (soldered):** 8 GiB Micron DDR4-2400, single-rank
+- **Channel B (SODIMM):** 16 GiB DDR4 module, running at 2400 MT/s
+- **Total detected:** 24 GiB physical (21 GiB usable in Linux after reservation)
 
----
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
-## Benchmarks
+<a id="benchmarks"></a>
+
+## ⚡ Benchmarks
 *(Current logs include before/after write runs, plus after-upgrade read run.)*
 
-**Before (write)** — single‑channel 8 GiB DDR4‑2400:
+**Before (write)** - single-channel 8 GiB DDR4-2400:
 ```text
 $ sysbench memory --memory-total-size=10G run
 ...
@@ -255,7 +264,7 @@ Latency (ms):
 		 sum:                                  822.08
 ```
 
-**After (write)** — 24 GiB physical (21 GiB usable):
+**After (write)** - 24 GiB physical (21 GiB usable):
 ```text
 $ sysbench memory --memory-total-size=10G run
 ...
@@ -274,7 +283,7 @@ Latency (ms):
          sum:                                 1215.48
 ```
 
-**After (read)** — 24 GiB physical (21 GiB usable):
+**After (read)** - 24 GiB physical (21 GiB usable):
 ```text
 $ sysbench memory --memory-total-size=10G --memory-oper=read run
 ...
@@ -293,7 +302,7 @@ Latency (ms):
          sum:                                  668.56
 ```
 
-| Test                        | Before (single‑channel)     | After (24 GiB installed) |
+| Test                        | Before (single-channel)     | After (24 GiB installed) |
 |-----------------------------|-----------------------------|--------------------------|
 | Write bandwidth (MiB/s)     | 5515.48                     | 3736.41                  |
 | Write max latency (ms)      | 2.76                        | 0.17                     |
@@ -301,37 +310,37 @@ Latency (ms):
 | Read max latency (ms)       | N/A (not in `logs/before`) | 0.25                     |
 
 ### Benchmark interpretation
-- **Yes, this run shows lower write speed**: 5515.48 → 3736.41 MiB/s (**-32.3%**).
-- **No before-upgrade read baseline exists** in `logs/before.txt`, so read before/after cannot be compared yet.
-- **This is a single-thread synthetic test**, so numbers can swing with CPU power state, boost, temperature, and background load.
-- **Mixed 8 GiB + 16 GiB RAM can also change subtimings/flex-mode behavior**, which may affect this specific benchmark profile.
+- This run shows **lower 1-thread write speed**: 5515.48 → 3736.41 MiB/s (**-32.3%**).
+- **No before-upgrade read baseline** exists in `logs/before.txt`, so read cannot be compared yet.
+- This is a **single-thread synthetic test**, so numbers swing with CPU power state, boost, temperature, and background load.
+- Mixed 8 GiB + 16 GiB RAM can change subtimings/flex-mode behavior.
 
-**TL;DR:** this log set shows a lower 1-thread write score after the upgrade, but it does **not** prove the machine is slower overall.
+**TL;DR:** lower 1-thread write score after the upgrade, but this does **not** prove the machine is slower overall.
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="troubleshooting"></a>
 
-## Troubleshooting
-- **Black screen after install** → Reseat the RAM firmly; disconnect battery + CMOS reset (hold power button 10 s).
+## 🛠️ Troubleshooting
+- **Black screen after install** → Reseat the RAM firmly; disconnect battery + CMOS reset (hold power button 10 s).
 - **System doesn't see full capacity** → Update BIOS; check that the stick is fully inserted.
 - **Third-party module reports lower capacity than advertised** → Use `decode-dimms` (from `i2c-tools`) to read the SPD; it might be a re‑flashed smaller stick. Return it.
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="thinkpad-culture--credits"></a>
 
-## ThinkPad Culture & Credits
-- The T495's soldered memory is a limitation, but filling the free slot for **mixed/flex dual‑channel behavior** is one of the best upgrades you can do for multitasking and the **Vega iGPU**.
-- ThinkPad keyboards, TrackPoint stewardship, and that matte‑black slab — that's why we keep these machines alive.
+## 🖤 ThinkPad Culture & Credits
+- Filling the free slot for **mixed/flex dual‑channel behavior** is one of the best upgrades for multitasking and the **Vega iGPU**.
+- ThinkPad keyboards, TrackPoint, and that matte‑black slab — that's why we keep these machines alive.
 - Captured on **Arch Linux, btw**.
 - The red nub is non‑negotiable. 🔴
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
 
----
+<a id="license"></a>
 
-## License
-This project is licensed under the MIT License — see the `LICENSE` file for details.
+## ⚖️ License
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
-⬆️ [Back to top](#top)
+<p align="right"><a href="#top">↑ Back to top</a></p>
